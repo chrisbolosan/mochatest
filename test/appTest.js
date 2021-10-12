@@ -6,6 +6,7 @@ const app = require('../app');
 //Results
 sayHelloResult = app.sayHello();
 addNumberResult = app.addNumbers(5, 5);
+copyrightResult = app.copyright('', 1976);
 
 describe('App', function () {
   describe('sayHello()', function () {
@@ -28,6 +29,12 @@ describe('App', function () {
     it('addNumbers should return type number', function () {
       // let result = app.addNumbers(5, 5);
       assert.typeOf(addNumberResult, 'number');
+    });
+  });
+
+  describe('copyright()', function () {
+    it('copyright should return a string and year', function () {
+      assert.include(copyrightResult, '', 1976);
     });
   });
 });
