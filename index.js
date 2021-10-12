@@ -19,6 +19,9 @@ const tasks = [
   },
 ];
 //GET
+app.get('/api/tasks', (req, res) => {
+  res.send('Welcome to TASKS API');
+});
 
 //POST
 
@@ -27,3 +30,6 @@ const tasks = [
 //PATCH
 
 //DELETE
+
+const port = process.env.PORT || 8082;
+app.listen(port, () => console.log(`Listening to port ${port}`));
