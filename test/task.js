@@ -1,5 +1,6 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
+const { response } = require('express');
 let server = require('../index');
 
 //Assertion style
@@ -106,6 +107,27 @@ describe('Tasks API', () => {
     });
   });
   //Test PUT Route
+  describe('PUT /api/tasks/:id', () => {
+    it('It should PUT a single task by the ID', (done) => {
+      const taskId = 1;
+      const task = {
+        name: 'Task 1 Changed',
+        completed: true,
+      };
+      chai
+        .request(server)
+        .put('/api/tasks/' + taskId)
+        .send(task)
+        .end((err, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('object');
+          response.body.should.have.property('id').eq(1);
+          response.body.should.have.property('name').eq('Task 1 Changed');
+          response.body.should.have.property('completed').eq(true);
+          done();
+        });
+    });
+  });
   //Test PATCH Route
   //Test DELETE Route
 });
