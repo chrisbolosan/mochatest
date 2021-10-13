@@ -60,7 +60,7 @@ app.put('/api/tasks/:id', (req, res) => {
   if (!task) {
     return res.status(404).send('The task with the provided ID does not exist');
   }
-  const { error, value } = taskSchema.validate(req.body);
+  const { error } = taskSchema.validate(req.body);
   if (error)
     return res
       .status(400)
@@ -71,27 +71,27 @@ app.put('/api/tasks/:id', (req, res) => {
   res.send(task);
 });
 //PATCH
-app.patch('/api/tasks/:id', (request, response) => {
-  const taskId = request.params.id;
+app.patch('/api/tasks/:id', (req, res) => {
+  const taskId = req.params.id;
   const task = tasks.find((task) => task.id === parseInt(taskId));
   if (!task)
-    return response
+    return res
       .status(404)
       .send('The task with the provided ID does not exist.');
 
-  const { error } = utils.validateTask(request.body);
+  const { error } = taskSchema.validate(req.body);
 
   if (error)
     return response
       .status(400)
       .send('The name should be at least 3 chars long!');
 
-  task.name = request.body.name;
+  task.name = req.body.name;
 
-  if (request.body.completed) {
-    task.completed = request.body.completed;
+  if (req.body.completed) {
+    task.completed = req.body.completed;
   }
-  response.send(task);
+  res.send(task);
 });
 
 //DELETE
