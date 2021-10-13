@@ -22,26 +22,28 @@ const tasks = [
   },
 ];
 //GET /tasks
-app.get('/api/tasks', (req, res) => {
-  res.send(tasks);
+app.get('/api/tasks', (request, response) => {
+  response.send(tasks);
 });
 //GET /tasks/:id
-app.get('/api/tasks/:id', (req, res) => {
+app.get('/api/tasks/:id', (request, response) => {
   const taskId = req.params.id;
 
   const task = tasks.find((task) => task.id === parseInt(taskId));
   if (!task) {
-    return res.status(404).send('The task with the provided ID does not exist');
+    return response
+      .status(404)
+      .send('The task with the provided ID does not exist');
   }
-  res.send(task);
+  response.send(task);
 });
 
 //POST
-app.post('/api/tasks', (req, res) => {
+app.post('/api/tasks', (req, response) => {
   const { error, value } = taskSchema.validate(req.body);
 
   if (error)
-    return res
+    return response
       .status(400)
       .send('The name should be at least 3 characters long');
 
@@ -51,24 +53,26 @@ app.post('/api/tasks', (req, res) => {
     completed: req.body.completed,
   };
   tasks.push(task);
-  res.send(task);
+  response.send(task);
 });
 //PUT
-app.put('/api/tasks/:id', (req, res) => {
+app.put('/api/tasks/:id', (req, response) => {
   const taskId = req.params.id;
   const task = tasks.find((task) => task.id === parseInt(taskId));
   if (!task) {
-    return res.status(404).send('The task with the provided ID does not exist');
+    return response
+      .status(404)
+      .send('The task with the provided ID does not exist');
   }
   const { error } = taskSchema.validate(req.body);
   if (error)
-    return res
+    return response
       .status(400)
       .send('The name should be at least 3 characters long');
 
   task.name = req.body.name;
   task.completed = req.body.completed;
-  res.send(task);
+  response.send(task);
 });
 //PATCH
 app.patch('/api/tasks/:id', (req, res) => {
@@ -109,4 +113,6 @@ app.delete('/api/tasks/:id', (req, res) => {
 });
 
 const port = process.env.PORT || 8082;
-app.listen(port, () => console.log(`Listening to port ${port}`));
+module.exports = app.listen(port, () =>
+  console.log(`Listening to port ${port}`)
+);
