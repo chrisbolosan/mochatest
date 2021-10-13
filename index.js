@@ -95,6 +95,18 @@ app.patch('/api/tasks/:id', (req, res) => {
 });
 
 //DELETE
+app.delete('/api/tasks/:id', (req, res) => {
+  const taskId = req.params.id;
+  const task = tasks.find((task) => task.id === parseInt(taskId));
+  if (!task)
+    return res
+      .status(400)
+      .send('The task with the provided ID does not exist.');
+
+  const index = tasks.indexOf(task);
+  tasks.splice(index, 1);
+  res.send(task);
+});
 
 const port = process.env.PORT || 8082;
 app.listen(port, () => console.log(`Listening to port ${port}`));
