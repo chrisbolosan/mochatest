@@ -34,6 +34,49 @@ describe('Tasks API', () => {
     });
   });
   //Test GET Route by ID
+  describe('GET /api/tasks/:id', () => {
+    it('It should GET a single task by ID', (done) => {
+      const taskId = 1;
+      chai
+        .request(server)
+        .get('/api/tasks/' + taskId)
+        .end((err, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('object');
+          response.body.should.have.property('id');
+          response.body.should.have.property('name');
+          response.body.should.have.property('completed');
+          response.body.should.have.property('id').eq(1);
+          done();
+        });
+    });
+  });
+  describe('GET /api/tasks/:id', () => {
+    it('It should NOT GET a single task by ID', (done) => {
+      const taskId = 14;
+      chai
+        .request(server)
+        .get('/api/tasks/' + taskId)
+        .end((err, response) => {
+          response.should.have.status(404);
+          response.text.should.be.eq(
+            'The task with the provided ID does not exist'
+          );
+          done();
+        });
+    });
+  });
+  //   describe('GET /api/tasks/:id', () => {
+  //     it('It should NOT GET a single task', (done) => {
+  //       chai
+  //         .request(server)
+  //         .get('/api/tasks/:id')
+  //         .end((err, response) => {
+  //           response.should.have.status(404);
+  //           done();
+  //         });
+  //     });
+  //   });
   //Test POST Route
   //Test PUT Route
   //Test PATCH Route
