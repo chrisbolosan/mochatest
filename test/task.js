@@ -66,18 +66,27 @@ describe('Tasks API', () => {
         });
     });
   });
-  //   describe('GET /api/tasks/:id', () => {
-  //     it('It should NOT GET a single task', (done) => {
-  //       chai
-  //         .request(server)
-  //         .get('/api/tasks/:id')
-  //         .end((err, response) => {
-  //           response.should.have.status(404);
-  //           done();
-  //         });
-  //     });
-  //   });
   //Test POST Route
+  describe('POST /api/tasks', () => {
+    it('It should POST a new single task', (done) => {
+      const task = {
+        name: 'Task 4',
+        completed: false,
+      };
+      chai
+        .request(server)
+        .post('/api/tasks')
+        .send(task)
+        .end((err, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('object');
+          response.body.should.have.property('id').eq(4);
+          response.body.should.have.property('name').eq('Task 4');
+          response.body.should.have.property('completed').eq(false);
+          done();
+        });
+    });
+  });
   //Test PUT Route
   //Test PATCH Route
   //Test DELETE Route
