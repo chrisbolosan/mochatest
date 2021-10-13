@@ -128,6 +128,27 @@ describe('Tasks API', () => {
         });
     });
   });
+  describe('PUT /api/tasks/:id', () => {
+    it('It should NOT PUT a single task by the ID with a name with less than 3 characters long', (done) => {
+      const taskId = 1;
+      const task = {
+        name: 'Ta',
+        completed: true,
+      };
+      chai
+        .request(server)
+        .put('/api/tasks/' + taskId)
+        .send(task)
+        .end((err, response) => {
+          response.should.have.status(400);
+          response.text.should.be.eq(
+            'The name should be at least 3 characters long'
+          );
+
+          done();
+        });
+    });
+  });
   //Test PATCH Route
   //Test DELETE Route
 });
