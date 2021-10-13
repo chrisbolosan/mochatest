@@ -87,6 +87,24 @@ describe('Tasks API', () => {
         });
     });
   });
+  describe('POST /api/tasks', () => {
+    it('It should NOT POST a new single task without the name property', (done) => {
+      const task = {
+        completed: false,
+      };
+      chai
+        .request(server)
+        .post('/api/tasks')
+        .send(task)
+        .end((err, response) => {
+          response.should.have.status(400);
+          response.text.should.be.eq(
+            'The name should be at least 3 characters long'
+          );
+          done();
+        });
+    });
+  });
   //Test PUT Route
   //Test PATCH Route
   //Test DELETE Route
