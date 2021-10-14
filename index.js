@@ -22,91 +22,97 @@ const tasks = [
   },
 ];
 //GET /tasks
-app.get('/api/tasks', (req, res) => {
-  res.send(tasks);
+app.get('/api/tasks', (request, response) => {
+  response.send(tasks);
 });
 //GET /tasks/:id
-app.get('/api/tasks/:id', (req, res) => {
-  const taskId = req.params.id;
+app.get('/api/tasks/:id', (request, response) => {
+  const taskId = request.params.id;
 
   const task = tasks.find((task) => task.id === parseInt(taskId));
   if (!task) {
-    return res.status(404).send('The task with the provided ID does not exist');
+    return response
+      .status(404)
+      .send('The task with the provided ID does not exist');
   }
-  res.send(task);
+  response.send(task);
 });
 
 //POST
-app.post('/api/tasks', (req, res) => {
-  const { error, value } = taskSchema.validate(req.body);
+app.post('/api/tasks', (request, response) => {
+  const { error, value } = taskSchema.validate(request.body);
 
   if (error)
-    return res
+    return response
       .status(400)
       .send('The name should be at least 3 characters long');
 
   const task = {
     id: tasks.length + 1,
-    name: req.body.name,
-    completed: req.body.completed,
+    name: request.body.name,
+    completed: request.body.completed,
   };
   tasks.push(task);
-  res.send(task);
+  response.send(task);
 });
 //PUT
-app.put('/api/tasks/:id', (req, res) => {
-  const taskId = req.params.id;
+app.put('/api/tasks/:id', (request, response) => {
+  const taskId = request.params.id;
   const task = tasks.find((task) => task.id === parseInt(taskId));
   if (!task) {
-    return res.status(404).send('The task with the provided ID does not exist');
+    return response
+      .status(404)
+      .send('The task with the provided ID does not exist');
   }
-  const { error } = taskSchema.validate(req.body);
+  const { error } = taskSchema.validate(request.body);
   if (error)
-    return res
+    return response
       .status(400)
       .send('The name should be at least 3 characters long');
 
-  task.name = req.body.name;
-  task.completed = req.body.completed;
-  res.send(task);
+  task.name = request.body.name;
+  task.completed = request.body.completed;
+  response.send(task);
 });
 //PATCH
-app.patch('/api/tasks/:id', (req, res) => {
-  const taskId = req.params.id;
+app.patch('/api/tasks/:id', (request, response) => {
+  const taskId = request.params.id;
   const task = tasks.find((task) => task.id === parseInt(taskId));
   if (!task)
-    return res
+    return response
       .status(404)
       .send('The task with the provided ID does not exist.');
 
-  const { error } = taskSchema.validate(req.body);
+  const { error } = taskSchema.validate(request.body);
 
   if (error)
     return response
       .status(400)
       .send('The name should be at least 3 chars long!');
 
-  task.name = req.body.name;
+  task.name = request.body.name;
 
-  if (req.body.completed) {
-    task.completed = req.body.completed;
+  if (request.body.completed) {
+    task.completed = request.body.completed;
   }
-  res.send(task);
+  response.send(task);
 });
 
 //DELETE
-app.delete('/api/tasks/:id', (req, res) => {
-  const taskId = req.params.id;
+app.delete('/api/tasks/:id', (request, response) => {
+  const taskId = request.params.id;
   const task = tasks.find((task) => task.id === parseInt(taskId));
   if (!task)
-    return res
+    return response
       .status(400)
       .send('The task with the provided ID does not exist.');
 
   const index = tasks.indexOf(task);
   tasks.splice(index, 1);
-  res.send(task);
+  response.send(task);
 });
 
 const port = process.env.PORT || 8082;
-app.listen(port, () => console.log(`Listening to port ${port}`));
+module.exports = app.listen(port, () =>
+  console.log(`Listening to port ${port}`)
+);
