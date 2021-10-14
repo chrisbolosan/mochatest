@@ -129,7 +129,7 @@ describe('Tasks API', () => {
     });
   });
   describe('PUT /api/tasks/:id', () => {
-    it('It should NOT PUT an existing task by the ID with a name with less than 3 characters long', (done) => {
+    it('It should NOT PUT an existing task with a name with less than 3 characters long', (done) => {
       const taskId = 1;
       const task = {
         name: 'Ta',
@@ -151,7 +151,7 @@ describe('Tasks API', () => {
   });
   //Test PATCH Route
   describe('PATCH /api/tasks/:id', () => {
-    it('It should PATCH an existing task by the ID', (done) => {
+    it('It should PATCH an existing task', (done) => {
       const taskId = 1;
       const task = {
         name: 'Task 1 patched',
@@ -171,7 +171,7 @@ describe('Tasks API', () => {
     });
   });
   describe('PATCH /api/tasks/:id', () => {
-    it('It should NOT PATCH an existing task by the ID with a name with less than 3 characters long', (done) => {
+    it('It should NOT PATCH an existing task with a name with less than 3 characters long', (done) => {
       const taskId = 1;
       const task = {
         name: 'Ta',
